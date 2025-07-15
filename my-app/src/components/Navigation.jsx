@@ -60,7 +60,7 @@ function Navigation() {
             Log In
           </button>
           <button
-            onClick={() => navigate('/shop')}
+            onClick={() => navigate('/login')}
             className="px-5 py-2 rounded-full border border-pink-500 text-pink-500 font-semibold hover:bg-pink-50 transition"
           >
             Shop
@@ -118,7 +118,7 @@ function Navigation() {
             </button>
             <button
               onClick={() => {
-                navigate('/shop');
+                navigate('/login');
                 setIsMenuOpen(false);
               }}
               className="w-full px-5 py-3 rounded-full border border-pink-500 text-pink-500 font-semibold hover:bg-pink-50 transition"
