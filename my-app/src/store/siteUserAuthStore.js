@@ -3,8 +3,8 @@ import axios from "axios";
 
 const API_URL =
   import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/siteuser"
-    : "/api/siteuser";
+    ? "http://localhost:5001/api/siteuser"
+    : import.meta.env.VITE_API_URL + "/siteuser";
 
 axios.defaults.withCredentials = true;
 
