@@ -31,7 +31,7 @@ function CategoryPill({ category, selected, onClick }) {
 function FoodCard({ food, idx }) {
   const imageUrl = food.picture?.startsWith("http")
     ? food.picture
-    : `http://localhost:5000${food.picture}`;
+    : `${API_URL}${food.picture}`;
 
   return (
     <motion.div
@@ -120,6 +120,8 @@ export default function FoodList({ shopId }) {
 
   const navigate = useNavigate();
 
+ const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   useEffect(() => {
     if (!shopId) return;
     setLoading(true);
@@ -127,7 +129,7 @@ export default function FoodList({ shopId }) {
 
     async function fetchData() {
       try {
-        const foodRes = await fetch(`http://localhost:5000/api/food/shop/${shopId}`);
+        const foodRes = await fetch(`${API_URL}/api/food/shop/${shopId}`);
         const foodData = await foodRes.json();
 
         setFoods(Array.isArray(foodData) ? foodData : []);

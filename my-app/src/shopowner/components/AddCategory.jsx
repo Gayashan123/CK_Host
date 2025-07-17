@@ -17,44 +17,46 @@ const AddCategory = ({ onClose, onAddCategory }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccessMessage("");
-    setErrorMessage("");
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
 
-    if (categoryName.trim()) {
-      try {
-        const response = await fetch("/api/categories", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name: categoryName.trim() })
-        });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSuccessMessage("");
+  setErrorMessage("");
 
-        let data = null;
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          data = await response.json();
-        }
+  if (categoryName.trim()) {
+    try {
+      const response = await fetch(`${API_URL}/api/categories`, {  // Changed this line
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",  // Added this line if using cookies/auth
+        body: JSON.stringify({ name: categoryName.trim() })
+      });
 
-        if (!response.ok) {
-          // Prefer backend error message if present
-          throw new Error((data && data.error) || "Failed to add category.");
-        }
-
-        setSuccessMessage("Category added successfully!");
-        setCategoryName("");
-        onAddCategory && onAddCategory(data); // Optionally update parent
-        setTimeout(() => {
-          setSuccessMessage("");
-          onClose();
-        }, 1200);
-      } catch (err) {
-        setErrorMessage(err.message || "Something went wrong.");
+      let data = null;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
       }
+
+      if (!response.ok) {
+        throw new Error((data && data.error) || "Failed to add category.");
+      }
+
+      setSuccessMessage("Category added successfully!");
+      setCategoryName("");
+      onAddCategory && onAddCategory(data);
+      setTimeout(() => {
+        setSuccessMessage("");
+        onClose();
+      }, 1200);
+    } catch (err) {
+      setErrorMessage(err.message || "Something went wrong.");
     }
-  };
+  }
+};
 
   return (
     <AnimatePresence>

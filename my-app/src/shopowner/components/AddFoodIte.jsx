@@ -31,9 +31,14 @@ const AddFoodItem = ({ onClose }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+ const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
+
+
+
   useEffect(() => {
     setLoadingCategories(true);
-    fetch("/api/categories/my-shop", { credentials: "include" })
+   fetch(`${API_URL}/api/categories/my-shop`, { credentials: "include" })
       .then(res => res.json())
       .then(data => {
         setCategories(data);
@@ -69,7 +74,7 @@ const AddFoodItem = ({ onClose }) => {
         formData.append("picture", food.picture);
       }
 
-      const response = await fetch("/api/food", {
+      const response = await fetch(`${API_URL}/api/food"`, {
         method: "POST",
         body: formData,
         credentials: "include",

@@ -1,22 +1,25 @@
 import { Resend } from "resend";
-import dotenv from "dotenv";
 
-dotenv.config();
+// Environment configuration
+const isProduction = process.env.NODE_ENV === 'production';
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const resendFromEmail = process.env.RESEND_FROM_EMAIL;
 const resendFromName = process.env.RESEND_FROM_NAME || "CeylonCall";
 
-// Validate required environment variables
-if (!resendApiKey || !resendFromEmail) {
-  throw new Error("Missing required email configuration in .env file");
-}
+// Auto-switch between test/prod email
+const resendFromEmail = isProduction 
+  ? process.env.RESEND_FROM_EMAIL 
+  : 'onboarding@resend.dev';
+
+// Validation
+if (!resendApiKey) throw new Error("RESEND_API_KEY is missing");
+if (!resendFromEmail) throw new Error("RESEND_FROM_EMAIL is missing");
 
 const resend = new Resend(resendApiKey);
 
-const sender = {
+export const sender = {
   email: resendFromEmail,
   name: resendFromName,
 };
 
-export { resend, sender };
+export { resend };

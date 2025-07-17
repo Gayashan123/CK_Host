@@ -11,6 +11,8 @@ const getDisplayImage = (photo) => {
 };
 
 const EditPlaceModal = ({ place, categories, onClose, onUpdate, onDelete }) => {
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+  
   const [form, setForm] = useState({
     title: place.title || "",
     description: place.description || "",
@@ -71,7 +73,7 @@ const EditPlaceModal = ({ place, categories, onClose, onUpdate, onDelete }) => {
       formData.append("existingImages", JSON.stringify(existingImages));
       newImages.forEach(file => formData.append("images", file));
       
-      const res = await fetch(`/api/place/${place._id}`, {
+      const res = await fetch(`${API_URL}/api/place/${place._id}`, {
         method: "PUT",
         credentials: "include",
         body: formData,
@@ -118,7 +120,6 @@ const EditPlaceModal = ({ place, categories, onClose, onUpdate, onDelete }) => {
         <div className="p-6 space-y-4">
           {error && (
             <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm flex items-start gap-2">
-              <FiInfo className="mt-0.5 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}

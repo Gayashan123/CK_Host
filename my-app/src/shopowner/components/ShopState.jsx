@@ -11,6 +11,9 @@ const ShopStats = ({ shopId, isShopOwner = false }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState(null);
 
+
+const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   useEffect(() => {
     if (!shopId) return;
 
@@ -20,10 +23,10 @@ const ShopStats = ({ shopId, isShopOwner = false }) => {
         setError(null);
         
         const [likesRes, commentsRes] = await Promise.all([
-          fetch(`/api/shops/${shopId}/likes/count`, {
+          fetch(`${API_URL}/api/shops/${shopId}/likes/count`, {
             credentials: "include",
           }),
-          fetch(`/api/comments/shop/${shopId}`, {
+          fetch(`${API_URL}/api/comments/shop/${shopId}`, {
             credentials: "include",
           }),
         ]);
@@ -56,7 +59,7 @@ const ShopStats = ({ shopId, isShopOwner = false }) => {
     
     try {
       setDeletingId(commentId);
-      const res = await fetch(`/api/comments/${commentId}`, {
+      const res = await fetch(`${API_URL}/api/comments/${commentId}`, {
         method: "DELETE",
         credentials: "include",
       });

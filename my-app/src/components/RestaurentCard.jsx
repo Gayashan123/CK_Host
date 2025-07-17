@@ -13,10 +13,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
 function RestaurantCard({ shop, categories = [], currentUserId, onViewMenu }) {
   const navigate = useNavigate();
-  const mainImage = shop.photo ? `http://localhost:5000${shop.photo}` : "/default-shop.jpg";
+  const mainImage = shop.photo ? `${API_URL}${shop.photo}` : "/default-shop.jpg";
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
   // Check if current user has liked this shop
   const alreadyLiked =
     currentUserId && Array.isArray(shop.likes)
@@ -43,7 +45,7 @@ function RestaurantCard({ shop, categories = [], currentUserId, onViewMenu }) {
     setLikeLoading(true);
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/shops/${shop._id}/like`,
+        `${API_URL}/api/shops/${shop._id}/like`,
         {},
         { withCredentials: true }
       );
@@ -65,7 +67,7 @@ function RestaurantCard({ shop, categories = [], currentUserId, onViewMenu }) {
     setLoadingLikes(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/shops/${shop._id}/likes`,
+        `${API_URL}/api/shops/${shop._id}/likes`,
         { withCredentials: true }
       );
       setLikesList(response.data.data.likes);

@@ -25,6 +25,8 @@ function PlacesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+   const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   const user = useSiteUserAuthStore((state) => state.user);
   const navigate = useNavigate();
   const scrollRef = useRef(null);
@@ -34,8 +36,8 @@ function PlacesPage() {
       try {
         setLoading(true);
         const [placesRes, categoriesRes] = await Promise.all([
-          axios.get("/api/place"),
-          axios.get("/api/placecat"),
+          axios.get(`${API_URL}/api/place`),
+          axios.get(`${API_URL}/api/placecat`),
         ]);
         setPlaces(placesRes.data?.data || []);
         setCategories(categoriesRes.data || []);

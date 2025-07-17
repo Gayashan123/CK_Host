@@ -9,9 +9,9 @@ const ShopEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const goBack = () => window.history.back();
+ const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+  
+ const goBack = () => window.history.back();
 
   useEffect(() => {
     const fetchShop = async () => {

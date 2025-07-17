@@ -15,6 +15,7 @@ import CommentSection from "../components/PlaceComment";
 function PlaceDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
 
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,8 +32,8 @@ function PlaceDetails() {
       try {
         setLoading(true);
         const [placeRes, commentsRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/place/${id}`),
-          axios.get(`http://localhost:5000/api/placecomment/place/${id}`),
+          axios.get(`${API_URL}/api/place/${id}`),
+          axios.get(`${API_URL}/api/placecomment/place/${id}`),
         ]);
 
         setPlace(placeRes.data.data);
@@ -51,13 +52,13 @@ function PlaceDetails() {
     };
 
     fetchPlaceDetails();
-  }, [id]);
+  }, [id, API_URL]);
 
   // Like/unlike handler
   const handleLike = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/place/${id}/like`,
+        `${API_URL}/api/place/${id}/like`,
         {},
         { withCredentials: true }
       );
@@ -73,7 +74,7 @@ function PlaceDetails() {
     try {
       setCommentLoading(true);
       const res = await axios.post(
-        "http://localhost:5000/api/placecomment",
+        `${API_URL}/api/placecomment`,
         { placeId: id, text: commentText },
         { withCredentials: true }
       );
@@ -88,7 +89,7 @@ function PlaceDetails() {
   // Delete comment handler
   const handleDeleteComment = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/placecomment/${commentId}`, {
+      await axios.delete(`${API_URL}/api/placecomment/${commentId}`, {
         withCredentials: true,
       });
       setComments((prev) => prev.filter((c) => c._id !== commentId));
@@ -141,7 +142,7 @@ function PlaceDetails() {
           <div className="relative h-96 sm:h-[28rem] md:h-[32rem] w-full rounded-3xl overflow-hidden">
             {place.images?.length > 0 ? (
               <img
-                src={`http://localhost:5000${place.images[currentImageIndex]}`}
+                src={`${API_URL}${place.images[currentImageIndex]}`}
                 alt={place.title}
                 className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-105"
                 loading="lazy"
@@ -186,7 +187,7 @@ function PlaceDetails() {
                   aria-label={`Thumbnail ${idx + 1}`}
                 >
                   <img
-                    src={`http://localhost:5000${img}`}
+                    src={`${API_URL}${img}`}
                     alt={`Thumbnail ${idx + 1}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -257,7 +258,7 @@ function PlaceDetails() {
               <div className="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden shadow-md">
                 {place.user?.profilePicture ? (
                   <img
-                    src={`http://localhost:5000${place.user.profilePicture}`}
+                    src={`${API_URL}${place.user.profilePicture}`}
                     alt={place.user.username}
                     className="w-full h-full object-cover rounded-full"
                     loading="lazy"
@@ -280,8 +281,8 @@ function PlaceDetails() {
       </div>
 
       {/* Comments */}
-        <div className="mt-16">
-      <CommentSection placeId={id} />
+      <div className="mt-16">
+        <CommentSection placeId={id} />
       </div>
     </div>
   );

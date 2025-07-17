@@ -31,12 +31,12 @@ export default function RestaurantComments({ shopId }) {
   const [loading, setLoading] = useState(false);
   const [posting, setPosting] = useState(false);
   const { token } = useSiteUserAuthStore();
-
+const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
   // Fetch comments for the shop
   useEffect(() => {
     if (!shopId) return;
     setLoading(true);
-    fetch(`/api/comments/shop/${shopId}`, {
+    fetch(`${API_URL}/api/comments/shop/${shopId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -55,7 +55,7 @@ export default function RestaurantComments({ shopId }) {
 
     setPosting(true);
     try {
-      const res = await fetch("/api/comments", {
+      const res = await fetch(`${API_URL}/api/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

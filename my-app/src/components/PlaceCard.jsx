@@ -27,6 +27,8 @@ function PlaceCard({ place, categories = [], currentUserId }) {
   const [likeCount, setLikeCount] = useState(place.likeCount || 0);
   const [likeLoading, setLikeLoading] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   const handleLike = async () => {
     if (!currentUserId) {
       navigate("/user/login");
@@ -35,7 +37,7 @@ function PlaceCard({ place, categories = [], currentUserId }) {
     if (likeLoading) return;
     setLikeLoading(true);
     try {
-      const res = await axios.post(`/api/place/${place._id}/like`, {}, { withCredentials: true });
+      const res = await axios.post(`${API_URL}/api/place/${place._id}/like`, {}, { withCredentials: true });
       setLiked(res.data.data.liked);
       setLikeCount(res.data.data.likeCount);
     } catch (e) {
@@ -60,7 +62,7 @@ function PlaceCard({ place, categories = [], currentUserId }) {
       <header className="flex items-center gap-4 p-5">
         <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-pink-500 shadow-md flex-shrink-0">
           <img
-            src={mainImage.startsWith("/uploads/") ? `http://localhost:5000${mainImage}` : mainImage}
+            src={mainImage.startsWith("/uploads/") ? `${API_URL}${mainImage}` : mainImage}
             alt={place.title}
             className="w-full h-full object-cover"
             loading="lazy"
@@ -79,7 +81,7 @@ function PlaceCard({ place, categories = [], currentUserId }) {
       {/* Main Image */}
       <div className="relative group">
         <img
-          src={mainImage.startsWith("/uploads/") ? `http://localhost:5000${mainImage}` : mainImage}
+          src={mainImage.startsWith("/uploads/") ? `${API_URL}${mainImage}` : mainImage}
           alt={place.title}
           className="w-full aspect-square object-cover"
           loading="lazy"

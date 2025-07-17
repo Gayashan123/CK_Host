@@ -26,10 +26,13 @@ export default function ShopComments({ shopId }) {
   const [loading, setLoading] = useState(false);
   const { token } = useAuthStore();
 
+ const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
+
   useEffect(() => {
     if (!shopId) return;
     setLoading(true);
-    fetch(`/api/comments/shop/${shopId}`, {
+    fetch(`${API_URL}/api/comments/shop/${shopId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

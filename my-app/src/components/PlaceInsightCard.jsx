@@ -6,17 +6,18 @@ import { IoMdClose } from "react-icons/io";
 export default function PlaceInsightsCard({ place, categories }) {
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState([]);
+   const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
 
   const displayImage = place.images?.[0]?.startsWith("http")
     ? place.images[0]
-    : `http://localhost:5000${place.images?.[0]}`;
+    : `${API_URL}${place.images?.[0]}`;
 
   useEffect(() => {
     const fetchInsights = async () => {
       try {
         const [likeRes, commentRes] = await Promise.all([
-          axios.get(`/api/place/${place._id}/likes`),
-          axios.get(`/api/placecomment/place/${place._id}`),
+          axios.get(`${API_URL}/api/place/${place._id}/likes`),
+          axios.get(`${API_URL}/api/placecomment/place/${place._id}`),
         ]);
         setLikeCount(likeRes.data?.data?.likeCount || 0);
         setComments(commentRes.data || []);
@@ -31,7 +32,7 @@ export default function PlaceInsightsCard({ place, categories }) {
   const handleDeleteComment = async (commentId) => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
       try {
-        await axios.delete(`/api/placecomment/${commentId}`, {
+        await axios.delete(`${API_URL}/api/placecomment/${commentId}`, {
           withCredentials: true,
         });
         setComments((prev) => prev.filter((c) => c._id !== commentId));

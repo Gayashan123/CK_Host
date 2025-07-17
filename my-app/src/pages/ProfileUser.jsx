@@ -57,14 +57,15 @@ export default function ProfileUserPage() {
   const [showAddPlaceModal, setShowAddPlaceModal] = useState(false);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const [openInsightsId, setOpenInsightsId] = useState(null);
+const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const [placesRes, categoriesRes] = await Promise.all([
-          axios.get("/api/place", { withCredentials: true }),
-          axios.get("/api/placecat", { withCredentials: true }),
+          axios.get(`${API_URL}/api/place`, { withCredentials: true }),
+          axios.get(`${API_URL}/api/placecat`, { withCredentials: true }),
         ]);
         setPlaces(placesRes.data?.data || placesRes.data || []);
         setCategories(categoriesRes.data?.data || categoriesRes.data || []);
@@ -80,7 +81,7 @@ export default function ProfileUserPage() {
   const handleDeletePlace = async (placeId) => {
     if (window.confirm("Are you sure you want to delete this place?")) {
       try {
-        await axios.delete(`/api/place/${placeId}`, { withCredentials: true });
+        await axios.delete(`${API_URL}/api/place/${placeId}`, { withCredentials: true });
         setPlaces(prev => prev.filter(place => place._id !== placeId));
       } catch (error) {
         console.error("Failed to delete place:", error);
@@ -91,7 +92,7 @@ export default function ProfileUserPage() {
   const handleDeleteCategory = async (categoryId) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
-        await axios.delete(`/api/placecat/${categoryId}`, { withCredentials: true });
+        await axios.delete(`${API_URL}/api/placecat/${categoryId}`, { withCredentials: true });
         setCategories(prev => prev.filter(cat => cat._id !== categoryId));
       } catch (error) {
         console.error("Failed to delete category:", error);

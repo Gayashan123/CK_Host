@@ -18,10 +18,12 @@ const EditFood = ({ food, onClose, onUpdate, onDelete }) => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef();
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   // Load categories for the select dropdown
   useEffect(() => {
     setLoadingCategories(true);
-    fetch("/api/categories/my-shop", { credentials: "include" })
+    fetch(`${API_URL}/api/categories/my-shop`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setCategories(data);
@@ -65,7 +67,7 @@ const EditFood = ({ food, onClose, onUpdate, onDelete }) => {
       } else if (imageRemoved) {
         formData.append("picture", ""); // Signal backend to remove image
       }
-      const res = await fetch(`/api/food/${food._id}`, {
+      const res = await fetch(`${API_URL}/api/food/${food._id}`, {
         method: "PUT",
         body: formData,
         credentials: "include",

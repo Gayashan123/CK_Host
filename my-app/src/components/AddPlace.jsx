@@ -20,11 +20,11 @@ const AddLocation = ({ onClose }) => {
   const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-
+const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/placecat", {
+        const response = await fetch(`${API_URL}/api/placecat`, {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
           }
@@ -150,7 +150,7 @@ const AddLocation = ({ onClose }) => {
         formDataToSend.append('images', photo.file)
       );
 
-      const response = await fetch("/api/place", {
+      const response = await fetch(`${API_URL}/api/place`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`

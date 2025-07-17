@@ -28,6 +28,8 @@ const AddCategory = ({ onClose, onAddCategory }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+ const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage("");
@@ -36,7 +38,7 @@ const AddCategory = ({ onClose, onAddCategory }) => {
 
     if (categoryName.trim()) {
       try {
-        const response = await fetch("/api/placecat", {
+        const response = await fetch(`${API_URL}/api/placecat`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

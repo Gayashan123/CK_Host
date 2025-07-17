@@ -31,6 +31,8 @@ export default function PlaceComments({ placeId }) {
   const [posting, setPosting] = useState(false);
   const { token } = useSiteUserAuthStore();
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   // Fetch comments for the place
   useEffect(() => {
     if (!placeId) return;
@@ -38,7 +40,7 @@ export default function PlaceComments({ placeId }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/placecomment/place/${placeId}`, {
+        const response = await fetch(`${API_URL}/api/placecomment/place/${placeId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

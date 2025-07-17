@@ -37,6 +37,7 @@ export default function ShopEditModal({ shop, onClose }) {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -57,7 +58,7 @@ export default function ShopEditModal({ shop, onClose }) {
       const formData = new FormData();
       Object.entries(form).forEach(([key, val]) => formData.append(key, val));
       if (photo) formData.append("photo", photo);
-      await axios.put(`/api/shops/${shop._id}`, formData, {
+      await axios.put(`${API_URL}/api/shops/${shop._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });

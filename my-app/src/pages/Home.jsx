@@ -32,6 +32,8 @@ function Home() {
   const [shopTypeFilter, setShopTypeFilter] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://observant-vibrancy-production.up.railway.app";
+
   const navigate = useNavigate();
   const scrollRef = useRef(null);
 const user = useSiteUserAuthStore(state => state.user);
@@ -41,7 +43,7 @@ const user = useSiteUserAuthStore(state => state.user);
   // Fetch categories
   useEffect(() => {
     setLoadingCategories(true);
-    fetch("http://localhost:5000/api/categories/all")
+    fetch(`${API_URL}/api/categories/all`)
       .then((res) => res.json())
       .then((data) => {
         setAllCategories(Array.isArray(data) ? data : []);
@@ -56,7 +58,7 @@ const user = useSiteUserAuthStore(state => state.user);
     async function fetchShopsAndCategories() {
       setLoadingShops(true);
       try {
-        const res = await fetch("http://localhost:5000/api/shops/all");
+        const res = await fetch(`${API_URL}/api/shops/all`);
         if (!res.ok) throw new Error("Failed to fetch shops");
         const data = await res.json();
         const shopList = Array.isArray(data) ? data : data.shops || [];
@@ -66,7 +68,7 @@ const user = useSiteUserAuthStore(state => state.user);
           shopList.map(async (shop) => {
             try {
               const catRes = await fetch(
-                `http://localhost:5000/api/categories/shop/${shop._id}`
+                `${API_URL}/api/categories/shop/${shop._id}`
               );
               if (!catRes.ok) throw new Error();
               const categories = await catRes.json();
@@ -94,7 +96,7 @@ const user = useSiteUserAuthStore(state => state.user);
   const handleViewFoods = (shopObj) => {
     setSelectedShop(shopObj);
     setLoadingFoods(true);
-    fetch(`http://localhost:5000/api/food?shopId=${shopObj._id}`)
+    fetch(`${API_URL}/api/food?shopId=${shopObj._id}`)
       .then((res) => res.json())
       .then((data) => {
         setFoods(Array.isArray(data) ? data : data.foods || []);
@@ -270,7 +272,7 @@ const user = useSiteUserAuthStore(state => state.user);
                     >
                       {food.picture && (
                         <img
-                          src={`http://localhost:5000${food.picture}`}
+                          src={`${API_URL}${food.picture}`}
                           alt={food.name}
                           className="w-16 h-16 object-cover rounded-md"
                         />
